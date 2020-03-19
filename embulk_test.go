@@ -1,15 +1,14 @@
 package go_embulk
 
 import (
-	"bytes"
 	"io"
 	"testing"
 )
 
 func TestGoEmbulk_Run(t *testing.T) {
 	type fields struct {
-		Source       io.Reader
-		Destinations []io.Writer
+		Source       Input
+		Destinations []Output
 	}
 	tests := []struct {
 		name    string
@@ -19,11 +18,9 @@ func TestGoEmbulk_Run(t *testing.T) {
 		{
 			name: "Success",
 			fields: fields{
-				Source: bytes.NewBufferString("test"),
-				Destinations: []io.Writer{
-					func() io.Writer {
-						return &bytes.Buffer{}
-					}(),
+				Source: &TestInput{},
+				Destinations: []Output{
+					&TestOutput{},
 				},
 			},
 		},
@@ -39,4 +36,32 @@ func TestGoEmbulk_Run(t *testing.T) {
 			}
 		})
 	}
+}
+
+type TestInput struct{}
+
+func (t *TestInput) Read(p []byte) (int, error) {
+	return 0, io.EOF
+}
+
+func (t *TestInput) Init() error {
+	return nil
+}
+
+func (t *TestInput) Finalize() error {
+	return nil
+}
+
+type TestOutput struct{}
+
+func (t *TestOutput) Write(data []byte) (int, error) {
+	return len(data), nil
+}
+
+func (t *TestOutput) Init() error {
+	return nil
+}
+
+func (t *TestOutput) Finalize() error {
+	return nil
 }
