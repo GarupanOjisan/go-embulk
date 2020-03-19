@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"database/sql"
 	"io"
-	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/sqltocsv"
