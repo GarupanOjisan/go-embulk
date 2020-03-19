@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/garupanojisan/go-embulk/plugins/input/stdin"
 	"log"
 
 	"github.com/garupanojisan/go-embulk"
+	"github.com/garupanojisan/go-embulk/plugins/input/stdin"
 	"github.com/garupanojisan/go-embulk/plugins/output/stdout"
 )
 
