@@ -18,8 +18,8 @@ import (
 
 func main() {
 	g := &go_embulk.GoEmbulk{
-		Source: bytes.NewBufferString("hello go-embulk"),
-		Destinations: []io.Writer{
+		Input: bytes.NewBufferString("hello go-embulk"),
+		Outputs: []io.Writer{
 			os.Stdout,
 		},
 	}
@@ -37,10 +37,10 @@ Input struct should implements io.Reader.
 For example,
  
 ```golang
-type ExampleSource struct {
+type ExampleInput struct {
 }
 
-func (s *ExampleSource) Read(p []byte) error {
+func (s *ExampleInput) Read(p []byte) error {
     // do something (e.g. initialization, authentication, etc...)
     
     // set data into p
@@ -54,10 +54,10 @@ func (s *ExampleSource) Read(p []byte) error {
 Output struct should implements io.Writer.
 
 ```golang
-type ExampleDestination struct {
+type ExampleOutput struct {
 }
 
-func (s *ExampleDestination) Write(data []byte) (int, error) {
+func (s *ExampleOutput) Write(data []byte) (int, error) {
     // do something (e.g. initialization, authentication, etc...)
     
     // write data

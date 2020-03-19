@@ -7,17 +7,17 @@ import (
 )
 
 type GoEmbulk struct {
-	Source       io.Reader
-	Destinations []io.Writer
+	Input   io.Reader
+	Outputs []io.Writer
 }
 
 func (g *GoEmbulk) Run() error {
-	buffer, err := ioutil.ReadAll(g.Source)
+	buffer, err := ioutil.ReadAll(g.Input)
 	if err != nil {
-		return fmt.Errorf("error reading Source.Read() %v", err.Error())
+		return fmt.Errorf("error reading Input.Read() %v", err.Error())
 	}
 
-	for i, dst := range g.Destinations {
+	for i, dst := range g.Outputs {
 		n, err := dst.Write(buffer)
 		if err != nil {
 			return fmt.Errorf("error writing destination[%d] %v", i, err.Error())

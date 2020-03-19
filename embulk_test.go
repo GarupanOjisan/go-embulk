@@ -31,8 +31,8 @@ func TestGoEmbulk_Run(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			g := &GoEmbulk{
-				Source:       tt.fields.Source,
-				Destinations: tt.fields.Destinations,
+				Input:   tt.fields.Source,
+				Outputs: tt.fields.Destinations,
 			}
 			if err := g.Run(); (err != nil) != tt.wantErr {
 				t.Errorf("Run() error = %v, wantErr %v", err, tt.wantErr)
