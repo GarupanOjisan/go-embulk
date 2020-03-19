@@ -8,19 +8,19 @@ Implementation [Embulk](https://github.com/embulk/embulk) in Go.
 package main
 
 import (
-	"bytes"
-	"io"
+	"fmt"
 	"log"
-	"os"
 
 	"github.com/garupanojisan/go-embulk"
+	"github.com/garupanojisan/go-embulk/plugins/input/mysql"
+	"github.com/garupanojisan/go-embulk/plugins/output/stdout"
 )
 
 func main() {
 	g := &go_embulk.GoEmbulk{
-		Input: bytes.NewBufferString("hello go-embulk"),
-		Outputs: []io.Writer{
-			os.Stdout,
+		Input: mysql.NewMySQLInput(fmt.Sprintf("test:test@tcp(localhost)/test"), "SELECT * FROM test"),
+		Outputs: []go_embulk.Output{
+			stdout.NewStdout(),
 		},
 	}
 
@@ -32,7 +32,7 @@ func main() {
 
 ## Input
 
-Input struct should implements io.Reader.
+Input struct should implements Input interface.
 
 For example,
  
@@ -47,11 +47,19 @@ func (s *ExampleInput) Read(p []byte) error {
 
     // do something
 }
+
+func (s *ExampleInput) Init() error {
+    return nil
+}
+
+func (s *ExampleInput) Finalize() error {
+    return nil
+}
 ```
 
 ## Output 
 
-Output struct should implements io.Writer.
+Output struct should implements Output interface.
 
 ```golang
 type ExampleOutput struct {
@@ -63,5 +71,13 @@ func (s *ExampleOutput) Write(data []byte) (int, error) {
     // write data
 
     // do something
+}
+
+func (s *ExampleOutput) Init() error {
+    return nil
+}
+
+func (s *ExampleOutput) Finalize() error {
+    return nil
 }
 ```
